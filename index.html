@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Life Costs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#222222">
+</head>
+<body class="dark">
+<main>
+  <!-- HOME -->
+  <section id="home" class="screen active" data-mode="dark">
+    <div class="home-header">
+      <div class="menu">
+        <span onclick="toggleHomeMenu()">⋮</span>
+        <div id="home-menu" class="menu-dropdown">
+          <button onclick="exportData()">Export Data</button>
+          <button onclick="importData()">Import Data</button>
+        </div>
+      </div>
+    </div>
+    <div class="home-wrap">
+      <button class="pill active" onclick="openExpense('survive')">survive</button>
+      <button class="pill" onclick="openExpense('fun')">fun</button>
+      <button class="add" onclick="openIncome()">
+        <svg width="40" height="40" viewBox="0 0 40 40">
+          <line x1="20" y1="10" x2="20" y2="30" stroke="#f7f7f7" stroke-width="1"/>
+          <line x1="10" y1="20" x2="30" y2="20" stroke="#f7f7f7" stroke-width="1"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- EXPENSE -->
+  <section id="expense" class="screen" data-mode="light">
+    <div class="content-center">
+      <div class="right-align">
+        <h1 id="expense-title"></h1>
+      </div>
+
+      <div class="table">
+        <input type="date" id="date">
+        <input type="number" id="amount" placeholder="0" step="1">
+        <input type="text" id="note" placeholder="note">
+      </div>
+
+      <div class="right-align">
+        <button class="done" onclick="saveExpense()">done</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INCOME -->
+  <section id="income" class="screen" data-mode="light">
+    <div class="content-center">
+      <div class="right-align">
+        <h1>income</h1>
+      </div>
+
+      <div class="table">
+        <input type="date" id="income-date">
+        <input type="number" id="income-amount" placeholder="0" step="1">
+        <input type="text" id="income-source" placeholder="source">
+      </div>
+
+      <div class="right-align">
+        <button class="done" onclick="saveIncome()">done</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIXED -->
+  <section id="fixed" class="screen" data-mode="light">
+    <div class="content-center">
+      <div class="right-align">
+        <h1>fixed expenses</h1>
+      </div>
+
+      <div class="table">
+        <input id="fixed-name" placeholder="name">
+        <input id="fixed-amount" type="number" placeholder="0" step="1">
+        <select id="fixed-cycle">
+          <option value="monthly">monthly</option>
+          <option value="yearly">yearly</option>
+          <option value="once">once</option>
+        </select>
+      </div>
+
+      <div class="right-align">
+        <button class="done" onclick="saveFixed()">add</button>
+      </div>
+
+      <div class="table" id="fixed-list"></div>
+    </div>
+  </section>
+
+  <!-- MOVEMENTS (früher DETAILS) -->
+  <section id="movements" class="screen" data-mode="dark">
+    <div class="content-center">
+      <div class="right-align">
+        <h1>movements</h1>
+      </div>
+
+      <div class="filter left">
+        <div class="filter-row">
+          <input type="month" id="detail-month" onchange="renderMovements()">
+          <details class="dropdown">
+            <summary>category</summary>
+            <label><input type="checkbox" value="survive" checked onchange="renderMovements()"> survive</label>
+            <label><input type="checkbox" value="fun" checked onchange="renderMovements()"> fun</label>
+            <label><input type="checkbox" value="fixed" checked onchange="renderMovements()"> fixed</label>
+            <label><input type="checkbox" value="income" checked onchange="renderMovements()"> income</label>
+          </details>
+        </div>
+      </div>
+
+      <div class="table three" id="details-list"></div>
+    </div>
+  </section>
+
+  <!-- BALANCE -->
+  <section id="balance" class="screen" data-mode="dark">
+    <div class="content-center">
+      <div class="right-align">
+        <h1>balance</h1>
+      </div>
+
+      <div class="filter left">
+        <div class="filter-row">
+          <input type="month" id="balance-month" class="white" onchange="calculateBalance()">
+          <label class="checkbox-line">
+            <input type="checkbox" id="balance-year" onchange="calculateBalance()"> show full year
+          </label>
+        </div>
+      </div>
+
+      <div class="table" id="balance-expenses">
+        <div class="row split"><span>survive</span><span id="b-survive">0 €</span></div>
+        <div class="row split"><span>fun</span><span id="b-fun">0 €</span></div>
+        <div class="row split"><span>fixed</span><span id="b-fixed">0 €</span></div>
+        <div class="row split strong"><span>total expenses</span><span id="b-expenses">0 €</span></div>
+      </div>
+
+      <div class="table" id="balance-income">
+        <div class="row split"><span>income</span><span id="b-income">0 €</span></div>
+      </div>
+
+      <div class="table" id="balance-total">
+        <div class="row split strong"><span>balance</span><span id="b-balance">0 €</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <button onclick="showHome()">€</button>
+  <button onclick="openFixed()">fixed</button>
+  <button onclick="openMovements()">movements</button>
+  <button onclick="openBalance()">balance</button>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
